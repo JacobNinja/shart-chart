@@ -4,6 +4,7 @@ GEM
     ruby_parser (3.2.2)
       sexp_processor (~> 4.1)
     sexp_processor (4.4.1)
+    test-unit (2.5.5)
 
 PLATFORMS
   ruby
@@ -11,3 +12,4 @@ PLATFORMS
 DEPENDENCIES
   ruby_parser
   sexp_processor
+  test-unit (= 2.5.5)
