@@ -7,14 +7,14 @@ class ShartChartTest < Test::Unit::TestCase
     result = ShartChart.pooooop(<<-RUBY)
 class Foo; end
     RUBY
-    assert_includes result, {name: 'Foo', references: []}
+    assert_includes result, ShartChart::Result.new('Foo', [])
   end
 
   test 'single object references other object' do
     result = ShartChart.pooooop(<<-RUBY).first
 class Foo; Object.foo(); end
     RUBY
-    assert_includes result[:references], ShartChart::Reference.new('Object')
+    assert_includes result.references, ShartChart::Reference.new('Object')
   end
 
   test 'multiple objects' do
@@ -22,8 +22,8 @@ class Foo; Object.foo(); end
 class Foo; end
 class Bar; end
     RUBY
-    assert_includes result, {name: 'Foo', references: []}
-    assert_includes result, {name: 'Bar', references: []}
+    assert_includes result, ShartChart::Result.new('Foo', [])
+    assert_includes result, ShartChart::Result.new('Bar', [])
   end
 
   test 'multiple objects reference each other' do
@@ -31,14 +31,14 @@ class Bar; end
 class Foo; end
 class Bar; def foo; Foo.bar(); end; end
     RUBY
-    assert_includes result, {name: 'Bar', references: [ShartChart::Reference.new('Foo')]}
+    assert_includes result, ShartChart::Result.new('Bar', [ShartChart::Reference.new('Foo')])
   end
 
   test 'multiple references to another object' do
     result = ShartChart.pooooop(<<-RUBY)
 class Bar; def foo; Foo.bar(); end; Foo.baz(); end
     RUBY
-    assert_includes result, {name: 'Bar', references: [ShartChart::Reference.new('Foo')] * 2}
+    assert_includes result, ShartChart::Result.new('Bar', [ShartChart::Reference.new('Foo')] * 2)
   end
 
   test 'ignores top level references' do

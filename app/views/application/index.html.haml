@@ -1,0 +1,3 @@
+= form_tag(graph_path, method: :get) do
+  = text_field_tag(:filename, nil, placeholder: 'Enter a filename to graph')
+  = submit_tag('Graph it!')

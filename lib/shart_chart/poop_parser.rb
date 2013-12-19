@@ -3,6 +3,7 @@ require 'sexp_processor'
 
 module ShartChart
 
+  Result = Struct.new(:klass, :references)
   Reference = Struct.new(:klass)
 
   class PoopParser < SexpProcessor
@@ -19,8 +20,8 @@ module ShartChart
 
     def process_class(exp)
       class_name = exp.shift
-      @current_class_hash = {name: class_name.to_s, references: []}
-      @poop.push @current_class_hash
+      @current_class_result = Result.new(class_name.to_s, [])
+      @poop.push @current_class_result
       process(exp.shift) until exp.empty?
       s()
     end
@@ -36,7 +37,7 @@ module ShartChart
     private
 
     def push_reference(var)
-      @current_class_hash[:references].push(Reference.new(var)) if @current_class_hash
+      @current_class_result.references.push(Reference.new(var)) if @current_class_result
     end
 
   end

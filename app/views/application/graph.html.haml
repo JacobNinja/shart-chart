@@ -1,0 +1,8 @@
+%svg#graph
+
+= content_for :head do
+  :javascript
+    window.json = {
+      nodes: #{@graph_data.nodes.to_json},
+      links: #{@graph_data.links.to_json}
+    };
